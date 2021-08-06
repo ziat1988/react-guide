@@ -1,9 +1,10 @@
+import { useState } from "react";
 import "./App.css";
 import Expenses from "./components/Expenses/Expenses";
 import NewExpense from "./components/NewExpense/NewExpense";
 
 function App() {
-  const expenses = [
+  const DUMMY_DATA = [
     {
       id: "e1",
       title: "Toilet Paper",
@@ -25,10 +26,12 @@ function App() {
     },
   ];
 
-  const addExpenseHandler = (expense) => {
-    const newArr = [...expenses, expense];
+  const [expenses, setExpenses] = useState(DUMMY_DATA);
 
-    console.log("new list:", newArr);
+  const addExpenseHandler = (expense) => {
+    //setExpenses([...expenses, expense]); -> wrong way update
+
+    setExpenses((prevState) => [expense, ...prevState]);
   };
 
   return (

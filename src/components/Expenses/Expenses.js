@@ -1,30 +1,30 @@
 import { useState } from "react";
 import Card from "../UI/Card";
+import ExpenseChart from "./ExpenseChart";
 import ExpenseItem from "./ExpenseItem";
 import "./Expenses.scss";
 import ExpensesFilter from "./ExpensesFilter";
 
 const Expenses = ({ expenses }) => {
-  //const yearCurrent = new Date().getFullYear();
-  const [selectYear, setSelectYear] = useState("");
+  const yearCurrent = new Date().getFullYear().toString();
+  const [selectYear, setSelectYear] = useState(yearCurrent);
 
   const changeYearHandler = (year) => {
     setSelectYear(year);
   };
 
-  if (selectYear !== "") {
-    console.log("vo day");
-    expenses = expenses.filter((expense) => expense.date.getFullYear() === +selectYear);
-  }
+  const filteredExpenses = expenses.filter((expense) => expense.date.getFullYear().toString() === selectYear);
 
-  console.log("array expense:", expenses);
   return (
     <div>
       <Card className="expenses">
         <ExpensesFilter selectYear={selectYear} onChangeYear={changeYearHandler} />
-        {expenses.map((item) => (
-          <ExpenseItem key={item.id} {...item} />
-        ))}
+
+        <ExpenseChart filteredExpenses={filteredExpenses} />
+
+        {filteredExpenses.length > 0 && filteredExpenses.map((item) => <ExpenseItem key={item.id} {...item} />)}
+
+        {filteredExpenses.length === 0 && <h2>No item</h2>}
       </Card>
     </div>
   );
